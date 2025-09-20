@@ -3,8 +3,8 @@ package com.attico.Anagrafiche.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
 
+//ogni oggetto di Anagrafiche sarà salvato nella collection mongoDB "Anagrafiche"
 @Document(collection = "Anagrafiche")
 public class Anagrafica {
 

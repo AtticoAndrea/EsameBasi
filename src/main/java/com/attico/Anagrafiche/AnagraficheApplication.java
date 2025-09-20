@@ -13,9 +13,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
+
+//abilita Springfox Swagger 2 - permette di generare documentazione API
 @EnableSwagger2
 public class AnagraficheApplication {
 
+	//configurazione Swagger
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
@@ -29,6 +32,7 @@ public class AnagraficheApplication {
 		return builder.build();
 	}
 
+	//avvia applicazione Spring Boot
 	public static void main(String[] args) {
 		SpringApplication.run(AnagraficheApplication.class, args);
 	}

@@ -33,8 +33,13 @@ public class Controller {
     }
 
     @PostMapping("/anagrafiche")
-    public Anagrafica addAnagrafica(@RequestBody Anagrafica anagrafica){
-        return repo.save(anagrafica);
+    public String addAnagrafica(@RequestBody Anagrafica anagrafica){
+        if(repo.existsById(anagrafica.getNumTessera())){
+            return "Esiste già un'anagrafica con id " + anagrafica.getNumTessera();
+        } else {
+            repo.save(anagrafica);
+            return "Anagrafica con id " + anagrafica.getNumTessera() + " aggiunta con successo";
+        }
     }
 
     @GetMapping("/anagrafiche/{text}")
@@ -47,6 +52,23 @@ public class Controller {
         if(repo.existsById(id)){
             repo.deleteById(id);
             return "Anagrafica con id " + id + " eliminata";
+        } else {
+            return "Nessuna anagrafica con id " + id + " trovata";
+        }
+    }
+
+    @PutMapping("/anagrafiche/{id}")
+    public String updateAnagrafica(@PathVariable String id, @RequestBody Anagrafica updatedData ){
+        if(repo.existsById(id)){
+            Anagrafica existing = repo.findById(id).get();
+
+            existing.setNome(updatedData.getNome());
+            existing.setCognome(updatedData.getCognome());
+            existing.setEmail(updatedData.getEmail());
+            existing.setTelefono(updatedData.getTelefono());
+
+            repo.save(existing);
+            return "Anagrafica con id " + id + " modificata";
         } else {
             return "Nessuna anagrafica con id " + id + " trovata";
         }
