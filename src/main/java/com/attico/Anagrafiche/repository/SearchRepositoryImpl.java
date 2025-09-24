@@ -14,22 +14,27 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/*
+identifica la classe come un bean, cioè un oggetto che deve essere gestito dal container di spring
+in questo modo è compito del container configurare, instanziare e passare ad altre classi
+ */
 @Component
 public class SearchRepositoryImpl implements SearchRepository {
 
-    @Autowired
-    MongoClient client;
+    @Autowired //inietta automaticamente dipendenza in classe gestita dal container spring
+    MongoClient client; //client MongoDB per connettersi al DB
 
-    @Autowired
-    MongoConverter converter;
+    @Autowired //vedi su
+    MongoConverter converter; //serve per convertire file BSON in oggetti java e viceversa
 
     @Override
     public List<Anagrafica> findByText(String text) {
 
         final List<Anagrafica> anagrafiche = new ArrayList<>();
 
-        MongoDatabase database = client.getDatabase("attico");
-        MongoCollection<Document> collection = database.getCollection("Anagrafiche");
+        //pipeline di ricerca sui campi nome e cognome usando l'operatore search di MOngo DB Atlas Search
+        MongoDatabase database = client.getDatabase("attico"); //si connette al database
+        MongoCollection<Document> collection = database.getCollection("Anagrafiche"); //ottiene la collezione
         AggregateIterable<Document> result = collection.aggregate(Arrays.asList(new Document("$search",
                 new Document("text",
                 new Document("query", text)

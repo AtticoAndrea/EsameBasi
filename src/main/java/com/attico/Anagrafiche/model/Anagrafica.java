@@ -4,11 +4,11 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 
-//ogni oggetto di Anagrafiche sarà salvato nella collection mongoDB "Anagrafiche"
+//ogni oggetto di Anagrafiche sarà salvato nella collection mongoDB "Anagrafiche", Anagrafiche è un modello
 @Document(collection = "Anagrafiche")
 public class Anagrafica {
 
-    @Id
+    @Id //imposta chiave primaria del documento
     private String numTessera;
 
     private String nome;
@@ -16,6 +16,7 @@ public class Anagrafica {
     private String email;
     private String telefono;
 
+    //costruttore vuoto è richiesto da Spring Data
     public Anagrafica() {
     }
 

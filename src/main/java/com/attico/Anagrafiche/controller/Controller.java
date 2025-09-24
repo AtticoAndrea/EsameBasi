@@ -14,14 +14,14 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    @Autowired
+    @Autowired //inietta automaticamente dipendenza in classe gestita dal container spring
     AnagraficheRepository repo;
 
-    @Autowired
+    @Autowired //vedi su
     SearchRepository searchRepo;
 
-    @ApiIgnore
-    @RequestMapping(value="/")
+    @ApiIgnore //questo metodo non viene mostrato nella doc swagger
+    @RequestMapping(value="/") //quando qualcuno accede a "/" nel browser viene reindirizzato a swagger
     public void redirect(HttpServletResponse response) throws IOException {
         response.sendRedirect("/swagger-ui.html");
 
@@ -33,7 +33,7 @@ public class Controller {
     }
 
     @PostMapping("/anagrafiche")
-    public String addAnagrafica(@RequestBody Anagrafica anagrafica){
+    public String addAnagrafica(@RequestBody Anagrafica anagrafica){ //Request Body prende Json dal client e converte in anagrafica
         if(repo.existsById(anagrafica.getNumTessera())){
             return "Esiste già un'anagrafica con id " + anagrafica.getNumTessera();
         } else {
@@ -43,12 +43,12 @@ public class Controller {
     }
 
     @GetMapping("/anagrafiche/{text}")
-    public List<Anagrafica> search(@PathVariable String text){
+    public List<Anagrafica> search(@PathVariable String text){ // PathVariable prende variabile dall'url
         return searchRepo.findByText(text);
     }
 
     @DeleteMapping("/anagrafiche/{id}")
-    public String deleteAnagrafica(@PathVariable String id){
+    public String deleteAnagrafica(@PathVariable String id){ //vedi su
         if(repo.existsById(id)){
             repo.deleteById(id);
             return "Anagrafica con id " + id + " eliminata";
@@ -58,7 +58,7 @@ public class Controller {
     }
 
     @PutMapping("/anagrafiche/{id}")
-    public String updateAnagrafica(@PathVariable String id, @RequestBody Anagrafica updatedData ){
+    public String updateAnagrafica(@PathVariable String id, @RequestBody Anagrafica updatedData ){ //vedi su
         if(repo.existsById(id)){
             Anagrafica existing = repo.findById(id).get();
 
